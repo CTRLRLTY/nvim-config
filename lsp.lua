@@ -5,7 +5,7 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
 vim.api.nvim_create_autocmd('FileType', {
-        pattern = 'c',
+        pattern = {'c', 'cpp'},
         callback = function(ev)
                 -- comment on highlight
                 vim.keymap.set('n', '<leader>k', function()
@@ -38,6 +38,18 @@ vim.api.nvim_create_autocmd('FileType', {
                 })
         end,
         group = vim.api.nvim_create_augroup('ClangdLspConfig', {clear=true}),
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'javascript',
+        callback = function(ev) 
+                vim.lsp.start({
+                        name = 'deno',
+                        cmd = {'deno', 'lsp'},
+                        root_dir = vim.fs.dirname(vim.fs.find({'package.json', '.git'}, { upward = true })[1]),
+                })
+        end,
+        group = vim.api.nvim_create_augroup('QuickLintJS', {clear=true}),
 })
 
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
