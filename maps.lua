@@ -13,7 +13,6 @@ vim.keymap.set('n', '<leader>hl', ':split ' .. vim.g.native_lsp_config .. '<cr>'
 
 vim.keymap.set('n', '<leader>qc', ':pclose<cr>', {noremap=true})
 -- }}}
-
 -- Window {{{
 ---- Move current buffer to the previous tab
 vim.keymap.set('n', '<leader>th', function() 
@@ -46,4 +45,44 @@ vim.keymap.set('n', '<leader>tl', function()
         vim.cmd("tabnext")
         vim.cmd("sb" .. currentbuf)
 end, {noremap=true})
+
+-- Stack window to right
+vim.keymap.set('n', '<leader>wl', function()
+        local currentwin = vim.api.nvim_get_current_win()
+        local currentbuf = vim.api.nvim_get_current_buf()
+
+        vim.cmd('wincmd l')
+
+        local targetwin = vim.api.nvim_get_current_win()  
+
+        if targetwin == currentwin then
+                print("No right window")
+                return
+        end
+
+        vim.api.nvim_win_close(currentwin, false)
+        vim.cmd("sb" .. currentbuf)
+end, {noremap=true})
+
+-- Stack window to left
+vim.keymap.set('n', '<leader>wh', function()
+        local currentwin = vim.api.nvim_get_current_win()
+        local currentbuf = vim.api.nvim_get_current_buf()
+
+        vim.cmd('wincmd h')
+
+        local targetwin = vim.api.nvim_get_current_win()  
+
+        if targetwin == currentwin then
+                print("No left window")
+                return
+        end
+
+        vim.api.nvim_win_close(currentwin, false)
+        vim.cmd("sb" .. currentbuf)
+end, {noremap=true})
+
+---- open directory listing
+vim.keymap.set('n', '<leader>od', ':vs %:h<cr>', {noremap=true})
+vim.keymap.set('n', '<leader>ed', ':e %:h<cr>', {noremap=true})
 -- }}}
