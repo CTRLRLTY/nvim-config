@@ -1,8 +1,13 @@
 " vim-plug Plugins {{{1
 call plug#begin(stdpath('config') . '/plugged')
+Plug 'LukasPietzschmann/telescope-tabs'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim/vim'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'sakhnik/nvim-gdb'
 " UltiSnip {{{2
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -15,7 +20,6 @@ let g:maplocalleader = "\\"
 let g:init_lua = stdpath('config') . "/config.lua"
 let g:map_config = stdpath('config') . "/maps.vimrc"
 let g:map_lua_config = stdpath('config') . "/maps.lua"
-let g:fzf_config = stdpath('config') . "/fzf.vim"
 let g:native_lsp_config = stdpath('config') . "/lsp.lua"
 " }}}
 " Global settings {{{
@@ -24,7 +28,6 @@ set foldmethod=marker
 set tabstop=8 shiftwidth=8 expandtab
 set wildmode=longest,list,full
 set wildmenu
-set nu rnu
 " }}}
 " sources {{{ 
 execute "source" . init_lua

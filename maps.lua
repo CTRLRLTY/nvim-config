@@ -1,17 +1,39 @@
 -- General {{{
-vim.keymap.set('n', '<leader>vi', ':vsplit $MYVIMRC<cr>', {noremap=true})
-vim.keymap.set('n', '<leader>hi', ':split $MYVIMRC<cr>', {noremap=true})
-vim.keymap.set('n', '<leader>vo', ':vsplit ' .. vim.g.init_lua .. '<cr>', {noremap=true})
-vim.keymap.set('n', '<leader>ho', ':split ' .. vim.g.init_lua .. '<cr>', {noremap=true})
+
 vim.keymap.set('n', '<leader>si', ':source $MYVIMRC<cr>', {noremap=true})
+vim.keymap.set('n', '<leader>fim', ':Telescope find_files search_dirs={vim.fs.dirname(vim.env.MYVIMRC)}<cr>')
 
-vim.keymap.set('n', '<leader>vm', ':vsplit ' .. vim.g.map_lua_config .. '<cr>', {noremap=true})
-vim.keymap.set('n', '<leader>hm', ':split ' .. vim.g.map_lua_config .. '<cr>', {noremap=true})
-
-vim.keymap.set('n', '<leader>vl', ':vsplit ' .. vim.g.native_lsp_config .. '<cr>', {noremap=true})
-vim.keymap.set('n', '<leader>hl', ':split ' .. vim.g.native_lsp_config .. '<cr>', {noremap=true})
 
 vim.keymap.set('n', '<leader>qc', ':pclose<cr>', {noremap=true})
+
+local builtin = require('telescope.builtin')
+local tabs = require('telescope-tabs')
+vim.keymap.set('n', '<leader>ft', tabs.list_tabs, {noremap=true})
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {noremap=true})
+vim.keymap.set('n', '<leader>fF', function() builtin.find_files({no_ignore=true}) end, {noremap=true})
+vim.keymap.set('n', '<leader>fgf', builtin.git_files, {noremap=true})
+vim.keymap.set('n', '<leader>flg', builtin.live_grep, {noremap=true})
+vim.keymap.set('n', '<leader>fm', builtin.marks, {noremap=true})
+vim.keymap.set('n', '<leader>fM', function() builtin.man_pages({sections = {"ALL"}}) end, {noremap=true})
+vim.keymap.set('n', '<leader>fr', builtin.registers, {noremap=true})
+vim.keymap.set('n', '<leader>fzf', builtin.current_buffer_fuzzy_find, {noremap=true})
+vim.keymap.set('n', '<leader>fc', builtin.commands, {noremap=true})
+vim.keymap.set('n', '<leader>fC', builtin.command_history, {noremap=true})
+vim.keymap.set('n', '<leader>fS', builtin.search_history, {noremap=true})
+vim.keymap.set('n', '<leader>fvo', builtin.vim_options, {noremap=true})
+vim.keymap.set('n', '<leader>fkn', builtin.keymaps, {noremap=true})
+vim.keymap.set('n', '<leader>fll', builtin.loclist, {noremap=true})
+vim.keymap.set('n', '<leader>fj', builtin.jumplist, {noremap=true})
+vim.keymap.set('n', '<leader>fac', builtin.autocommands, {noremap=true})
+vim.keymap.set('n', '<leader>fs', builtin.grep_string, {noremap=true})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {noremap=true})
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {noremap=true})
+
+vim.keymap.set('n', '<leader>yfn', function()
+        local line = vim.fn.line(".")
+        local cmd = vim.fn.expand('%') .. ":" .. line
+        vim.fn.setreg("", cmd) 
+end, {noremap=true})
 -- }}}
 -- Window {{{
 ---- Move current buffer to the previous tab
