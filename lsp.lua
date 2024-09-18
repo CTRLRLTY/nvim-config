@@ -32,6 +32,8 @@ vim.api.nvim_create_autocmd('FileType', {
                         cmd = {'clangd'},
                         root_dir = vim.fs.dirname(vim.fs.find({'.clangd', '.git'}, { upward = true })[1]),
                 })
+
+                vim.cmd("set cc=80")
         end,
         group = vim.api.nvim_create_augroup('ClangdLspConfig', {}),
 })
@@ -46,6 +48,18 @@ vim.api.nvim_create_autocmd('FileType', {
                         root_dir = vim.fs.dirname(vim.fs.find({'package.json', '.git'}, { upward = true })[1]),
                 })
         end,
+})
+
+
+vim.api.nvim_create_autocmd('BufEnter', {
+        group = ag_lsp_config,
+        callback = function(ev)
+                if vim.o.filetype == "c" or vim.o.filetype == "cpp" then
+                        vim.wo.colorcolumn = "80"
+                else
+                        vim.wo.colorcolumn = ""
+                end
+        end
 })
 
 vim.api.nvim_create_autocmd('BufWrite', {

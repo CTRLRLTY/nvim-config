@@ -1,10 +1,5 @@
 require('telescope').load_extension('telescope-tabs')
 
-
--- options
-vim.o.colorcolumn = "80"
-
-
 -- gruvbox specific
 vim.api.nvim_create_autocmd("vimenter", {
         pattern = "*",
