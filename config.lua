@@ -1,5 +1,49 @@
 require('telescope').load_extension('telescope-tabs')
+require('telescope').load_extension('dap')
 
+local dap = require("dap")
+
+dap.configurations = {}
+
+require('dap-go').setup({
+        dap_configurations = {
+                {
+                       type = "go",
+                       name = "Debug Project" ,
+                       request = "launch",
+                       program = function()
+                                        return coroutine.create(function(dap_run_co) 
+                                                require("telescope.builtin").git_files({
+                                                        prompt_title = "Select File to Debug",
+                                                        file_ignore_patterns = {"([^g][^o])$"},
+                                                        attach_mappings = function(_, map) 
+                                                                local actions = require('telescope.actions')
+                                                                local state = require('telescope.actions.state')
+
+                                                                actions.select_default:replace(function(prompt_bufnr)
+                                                                        local entry = state.get_selected_entry()
+                                                                        local file_path = entry.path or entry.filename
+
+                                                                        vim.print(file_path)
+                                                                        actions.close(prompt_bufnr)
+                                                                        coroutine.resume(dap_run_co, file_path)
+                                                                end)
+
+                                                                return true
+                                                end})
+
+                                        end)
+                                        
+                                end
+                }
+        },
+})
+
+-- require('dap.ext.vscode').load_launchjs()
+
+require("dapui").setup()
+
+vim.fn.yesp = 
 -- gruvbox specific
 vim.api.nvim_create_autocmd("vimenter", {
         pattern = "*",
@@ -24,7 +68,7 @@ vim.api.nvim_create_autocmd("ModeChanged", {
                         vim.o.relativenumber = false
                 end
 
-                
+
         end,
         group = group_numbertoggle, 
 })

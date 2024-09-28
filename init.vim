@@ -1,13 +1,23 @@
 " vim-plug Plugins {{{1
 call plug#begin(stdpath('config') . '/plugged')
-Plug 'LukasPietzschmann/telescope-tabs'
 Plug 'nvim-lua/plenary.nvim'
+
+" Telescope {{{
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+Plug 'nvim-telescope/telescope-dap.nvim'
+Plug 'LukasPietzschmann/telescope-tabs'
+" }}}
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim/vim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'sakhnik/nvim-gdb'
+" {{{ DAP
+Plug 'mfussenegger/nvim-dap'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'leoluz/nvim-dap-go'
+" }}}
 " UltiSnip {{{2
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -18,7 +28,6 @@ call plug#end()
 let g:mapleader = "-"
 let g:maplocalleader = "\\"
 let g:init_lua = stdpath('config') . "/config.lua"
-let g:map_config = stdpath('config') . "/maps.vimrc"
 let g:map_lua_config = stdpath('config') . "/maps.lua"
 let g:native_lsp_config = stdpath('config') . "/lsp.lua"
 " }}}

@@ -3,30 +3,6 @@ local ag_lsp_config = vim.api.nvim_create_augroup('UserLspConfig', {})
 vim.api.nvim_create_autocmd('FileType', {
         pattern = {'c', 'cpp'},
         callback = function(ev)
-                -- comment on highlight
-                vim.keymap.set('n', '<leader>k', function()
-                        local commented = false
-                        local startline = vim.fn.line("'<")
-                        local endline = vim.fn.line("'>")
-                        for i = startline, endline, 1 do
-                                local prefix = vim.api.nvim_buf_get_text(ev.buf, i-1, 0, i-1, 2, {})    
-                                if prefix[1] == "//" then
-                                        commented = true 
-                                        break
-                                else
-                                        commented = false
-                                end
-                        end
-                        if commented then
-                                vim.api.nvim_command(startline .. ',' .. endline .. 's/^\\/\\/ /')
-                        else
-                                vim.api.nvim_command(startline .. ',' .. endline .. 's/^/\\/\\/ /')
-                        end
-
-                        vim.api.nvim_command("nohlsearch")
-                        vim.api.nvim_command("norm! ``") -- back to original pos
-                end, { noremap = true, buffer = ev.buf})
-
                 vim.lsp.start({
                         name = 'clangd',
                         cmd = {'clangd'},
@@ -36,6 +12,20 @@ vim.api.nvim_create_autocmd('FileType', {
                 vim.cmd("set cc=80")
         end,
         group = vim.api.nvim_create_augroup('ClangdLspConfig', {}),
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+        pattern = {'go', 'gowork', 'gomod', 'gotmpl'},
+        callback = function(ev)
+                vim.lsp.start({
+                        name = 'gopls',
+                        cmd = {'gopls'},
+                        root_dir = vim.fs.dirname(vim.fs.find({'go.work', 'go.mod', '.git'}, { upward = true })[1]),
+                })
+
+                vim.cmd("set cc=80")
+        end,
+        group = vim.api.nvim_create_augroup('GoLspConfig', {}),
 })
 
 vim.api.nvim_create_autocmd('FileType', {
