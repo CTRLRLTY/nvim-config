@@ -13,8 +13,18 @@ vim.keymap.set('n', '<leader>fim', ':Telescope find_files search_dirs={vim.fs.di
 vim.keymap.set('n', '<leader>qc', ':pclose<cr>', {noremap=true})
 
 vim.keymap.set('n', '<leader>ft', tabs.list_tabs, {noremap=true})
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {noremap=true})
-vim.keymap.set('n', '<leader>fF', function() builtin.find_files({no_ignore=true}) end, {noremap=true})
+vim.keymap.set('n', '<leader>ff', function()
+        local utils = require("telescope.utils")
+        local root = vim.lsp.buf.list_workspace_folders()[1]
+
+        builtin.find_files({cwd=root})
+end, {noremap=true})
+vim.keymap.set('n', '<leader>fF', function() 
+        local utils = require("telescope.utils")
+        local root = vim.lsp.buf.list_workspace_folders()[1]
+
+        builtin.find_files({cwd=root, no_ignore=true}) 
+end, {noremap=true})
 vim.keymap.set('n', '<leader>fgf', builtin.git_files, {noremap=true})
 vim.keymap.set('n', '<leader>flg', builtin.live_grep, {noremap=true})
 vim.keymap.set('n', '<leader>fm', builtin.marks, {noremap=true})
@@ -32,6 +42,13 @@ vim.keymap.set('n', '<leader>fac', builtin.autocommands, {noremap=true})
 vim.keymap.set('n', '<leader>fs', builtin.grep_string, {noremap=true})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {noremap=true})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {noremap=true})
+
+vim.keymap.set('n', '<leader>lwa', vim.lsp.buf.add_workspace_folder, {noremap=true})
+vim.keymap.set('n', '<leader>lwd', vim.lsp.buf.remove_workspace_folder, {noremap=true})
+vim.keymap.set('n', '<leader>lwl', function()
+        local dirs = vim.lsp.buf.list_workspace_folders()
+        print(vim.inspect(dirs))
+end, {noremap=true})
 
 vim.keymap.set('n', '<Leader>dt', dapui.toggle, opts)
 vim.keymap.set('n', '<leader>fdf', teledap.frames, {noremap=true})

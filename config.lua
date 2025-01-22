@@ -5,45 +5,63 @@ local dap = require("dap")
 
 dap.configurations = {}
 
+function dap_go_program()
+        local routine = function(dap_run_co) 
+                require("telescope.builtin").git_files({
+                        prompt_title = "Select File to Debug",
+                        file_ignore_patterns = {"([^g][^o])$"},
+                        attach_mappings = function(_, map) 
+                                local actions = require('telescope.actions')
+                                local state = require('telescope.actions.state')
+
+                                actions.select_default:replace(function(prompt_bufnr)
+                                        local entry = state.get_selected_entry()
+                                        local file_path = entry.path or entry.filename
+
+                                        vim.print(file_path)
+                                        actions.close(prompt_bufnr)
+                                        coroutine.resume(dap_run_co, file_path)
+                                end)
+
+                                return true
+                        end})
+        end
+
+        return coroutine.create(routine)
+end
+
 require('dap-go').setup({
         dap_configurations = {
                 {
                        type = "go",
                        name = "Debug Project" ,
                        request = "launch",
-                       program = function()
-                                        return coroutine.create(function(dap_run_co) 
-                                                require("telescope.builtin").git_files({
-                                                        prompt_title = "Select File to Debug",
-                                                        file_ignore_patterns = {"([^g][^o])$"},
-                                                        attach_mappings = function(_, map) 
-                                                                local actions = require('telescope.actions')
-                                                                local state = require('telescope.actions.state')
-
-                                                                actions.select_default:replace(function(prompt_bufnr)
-                                                                        local entry = state.get_selected_entry()
-                                                                        local file_path = entry.path or entry.filename
-
-                                                                        vim.print(file_path)
-                                                                        actions.close(prompt_bufnr)
-                                                                        coroutine.resume(dap_run_co, file_path)
-                                                                end)
-
-                                                                return true
-                                                end})
-
-                                        end)
-                                        
-                                end
+                       program = dap_go_program
                 }
         },
 })
+
+dap.adapters.cmake = {
+        type = "pipe",
+        pipe = "${pipe}",
+        executable = {
+                command = "cmake",
+                args = {"--debugger", "--debugger-pipe", "${pipe}"}
+        }
+}
+
+dap.configurations.cmake = {
+        {
+                name = "Build",
+                type = "cmake",
+                request = "launch",
+        }
+}
 
 -- require('dap.ext.vscode').load_launchjs()
 
 require("dapui").setup()
 
-vim.fn.yesp = 
 -- gruvbox specific
 vim.api.nvim_create_autocmd("vimenter", {
         pattern = "*",
@@ -51,13 +69,11 @@ vim.api.nvim_create_autocmd("vimenter", {
         nested = true
 })
 
-
 -- automatic number and relativenumber
 local group_numbertoggle = vim.api.nvim_create_augroup('NumberToggle', {clear=true})
 
 vim.api.nvim_create_autocmd("ModeChanged", {
         callback = function(ev)
-
                 if not vim.o.number then
                         return
                 end
@@ -67,8 +83,6 @@ vim.api.nvim_create_autocmd("ModeChanged", {
                 else
                         vim.o.relativenumber = false
                 end
-
-
         end,
         group = group_numbertoggle, 
 })

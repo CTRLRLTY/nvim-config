@@ -44,7 +44,7 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('BufEnter', {
         group = ag_lsp_config,
         callback = function(ev)
-                if vim.o.filetype == "c" or vim.o.filetype == "cpp" then
+                if vim.o.filetype == "c" or vim.o.filetype == "cpp" or vim.o.filetype == "go" then
                         vim.wo.colorcolumn = "80"
                 else
                         vim.wo.colorcolumn = ""
@@ -79,8 +79,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
                 local builtin = require('telescope.builtin')
 
+
+                vim.uv.chdir(vim.lsp.buf.list_workspace_folders()[1])
+
                 vim.keymap.set('n', '<leader>log', ':lua vim.cmd("tabe" .. vim.lsp.get_log_path())<CR>', opts)
-                
 
                 vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
 
