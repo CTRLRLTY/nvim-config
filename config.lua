@@ -1,3 +1,7 @@
+if init_debug then
+        require"osv".launch({port=8086, blocking=true})
+end
+
 require('telescope').load_extension('telescope-tabs')
 require('telescope').load_extension('dap')
 
@@ -41,12 +45,24 @@ require('dap-go').setup({
         },
 })
 
+dap.configurations.lua = { 
+        { 
+                type = 'nlua', 
+                request = 'attach',
+                name = "Attach to running Neovim instance",
+        }
+}
+
+dap.adapters.nlua = function(callback, config)
+        callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
+end
+
 dap.adapters.cmake = {
         type = "pipe",
         pipe = "${pipe}",
         executable = {
                 command = "cmake",
-                args = {"--debugger", "--debugger-pipe", "${pipe}"}
+                args = {"--debugger", "--debugger-pipe", "${pipe}", "./build"}
         }
 }
 

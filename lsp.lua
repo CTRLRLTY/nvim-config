@@ -15,6 +15,19 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
+        pattern = {'python'},
+        callback = function(ev)
+                vim.lsp.start({
+                        name = 'jedi',
+                        cmd = {'jedi-language-server'},
+                        root_markers = {'.git'},
+                })
+
+        end,
+        group = vim.api.nvim_create_augroup('JediLspConfig', {}),
+})
+
+vim.api.nvim_create_autocmd('FileType', {
         pattern = {'go', 'gowork', 'gomod', 'gotmpl'},
         callback = function(ev)
                 vim.lsp.start({
@@ -79,8 +92,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
                 local builtin = require('telescope.builtin')
 
+                wrkspace = vim.lsp.buf.list_workspace_folders()[1]
 
-                vim.uv.chdir(vim.lsp.buf.list_workspace_folders()[1])
+                if not wrkspace == nil then
+                        vim.uv.chdir(wrkspace)
+                else
+                        print("LSP: no workspace found")
+                end
 
                 vim.keymap.set('n', '<leader>log', ':lua vim.cmd("tabe" .. vim.lsp.get_log_path())<CR>', opts)
 
@@ -100,10 +118,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
                 vim.keymap.set('n', '<leader>gtd', builtin.lsp_type_definitions, opts)
                 vim.keymap.set('n', '<leader>gi', builtin.lsp_implementations, opts)
 
-                vim.keymap.set('n', '<leader><space>wa', vim.lsp.buf.add_workspace_folder, opts)
-                vim.keymap.set('n', '<leader><space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+                vim.keymap.set('n', '<leader>la', vim.lsp.buf.add_workspace_folder, opts)
+                vim.keymap.set('n', '<leader>lr', vim.lsp.buf.remove_workspace_folder, opts)
 
-                vim.keymap.set('n', '<leader><space>wl', function()
+                vim.keymap.set('n', '<leader>lww', function()
                         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
                 end, opts)
 

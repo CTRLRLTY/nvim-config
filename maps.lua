@@ -50,6 +50,15 @@ vim.keymap.set('n', '<leader>lwl', function()
         print(vim.inspect(dirs))
 end, {noremap=true})
 
+vim.keymap.set('n', '<leader>dl', function() 
+  require"osv".launch({port = 8086}) 
+end, { noremap = true })
+
+vim.keymap.set('n', '<leader>dL', function() 
+  require"osv".stop() 
+  print("Lua DAP stopped")
+end, { noremap = true })
+
 vim.keymap.set('n', '<Leader>dt', dapui.toggle, opts)
 vim.keymap.set('n', '<leader>fdf', teledap.frames, {noremap=true})
 vim.keymap.set('n', '<leader>fdc', teledap.configurations, {noremap=true})
