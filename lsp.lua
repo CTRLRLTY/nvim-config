@@ -17,9 +17,12 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('FileType', {
         pattern = {'python'},
         callback = function(ev)
+                env_path = os.getenv('HOME') .. "/pyenv/bin/"
+                cmd_fqn =  env_path .. "jedi-language-server"
+
                 vim.lsp.start({
                         name = 'jedi',
-                        cmd = {'jedi-language-server'},
+                        cmd = {cmd_fqn},
                         root_markers = {'.git'},
                 })
 

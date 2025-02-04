@@ -53,16 +53,12 @@ dap.configurations.lua = {
         }
 }
 
-dap.adapters.nlua = function(callback, config)
-        callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
-end
-
-dap.adapters.cmake = {
-        type = "pipe",
-        pipe = "${pipe}",
-        executable = {
-                command = "cmake",
-                args = {"--debugger", "--debugger-pipe", "${pipe}", "./build"}
+dap.configurations.python = {
+        {
+                type = "python",
+                request = 'launch',
+                name = "current file",
+                program = "${file}",
         }
 }
 
@@ -71,6 +67,26 @@ dap.configurations.cmake = {
                 name = "Build",
                 type = "cmake",
                 request = "launch",
+        }
+}
+
+
+dap.adapters.nlua = function(callback, config)
+        callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
+end
+
+dap.adapters.python = {
+        type = "executable",
+        command = os.getenv('HOME') .. '/pyenv/bin/python',
+        args = { '-m', 'debugpy.adapter' },
+}
+
+dap.adapters.cmake = {
+        type = "pipe",
+        pipe = "${pipe}",
+        executable = {
+                command = "cmake",
+                args = {"--debugger", "--debugger-pipe", "${pipe}", "./build"}
         }
 }
 
