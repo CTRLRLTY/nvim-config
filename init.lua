@@ -4,8 +4,8 @@ vim.g.maplocalleader = "\\"
 vim.go.tabstop = 8
 vim.go.shiftwidth = 8
 vim.go.expandtab = true
-vim.go.wildmode = "longest,list,full"
-vim.go.wildmenu = true
+-- vim.go.wildmode = "longest,list,full"
+-- vim.go.wildmenu = true
 
 require('config.lazy')
 require('config.lsp')
