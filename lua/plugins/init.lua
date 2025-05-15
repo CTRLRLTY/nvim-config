@@ -168,5 +168,18 @@ return {
                         projects = require('telescope').extensions.projects
                         vim.keymap.set('n', '<Leader>fp', projects.projects)
                 end
+        },
+        {
+                'stevearc/oil.nvim',
+                ---@module 'oil'
+                ---@type oil.SetupOpts
+                config=true,
+                -- Optional dependencies
+                dependencies = { { "echasnovski/mini.icons", config = true }, 'nvim-telescope/telescope.nvim' },
+                keys = {
+                        {"<leader>od", function() require('oil').open_float() end,desc = "Open parent directory"}
+                },
+                -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+                lazy = false,
         }
 }

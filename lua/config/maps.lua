@@ -109,6 +109,6 @@ vim.keymap.set('n', '<leader>wh', function()
 end, {noremap=true})
 
 ---- open directory listing
-vim.keymap.set('n', '<leader>od', ':vs %:h<cr>', {noremap=true})
-vim.keymap.set('n', '<leader>ed', ':e %:h<cr>', {noremap=true})
+-- vim.keymap.set('n', '<leader>od', ':vs %:h<cr>', {noremap=true})
+-- vim.keymap.set('n', '<leader>ed', ':e %:h<cr>', {noremap=true})
 -- }}}
