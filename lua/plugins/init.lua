@@ -38,61 +38,55 @@ return {
                                 local root = vim.lsp.buf.list_workspace_folders()[1]
 
                                 builtin.find_files({ cwd = root, no_ignore = true })
-                        end, { noremap = true })
+                        end, { noremap = true, desc = "Browse current workspace [include ignored]" })
 
                         vim.keymap.set('n', '<leader>fim',
-                                ':Telescope find_files search_dirs={vim.fs.dirname(vim.env.MYVIMRC)}<cr>')
+                                ':Telescope find_files search_dirs={vim.fs.dirname(vim.env.MYVIMRC)}<cr>',
+                                { noremap = true, desc = "Browse init VIM" })
                         vim.keymap.set('n', '<leader>ff', function()
                                 local utils = require("telescope.utils")
                                 local root = vim.lsp.buf.list_workspace_folders()[1]
 
                                 builtin.find_files({ cwd = root })
-                        end, { noremap = true })
+                        end, { noremap = true, desc = "Browse current workspace" })
 
-                        vim.keymap.set('n', '<leader>fgf', builtin.git_files, { noremap = true })
-                        vim.keymap.set('n', '<leader>flg', builtin.live_grep, { noremap = true })
-                        vim.keymap.set('n', '<leader>fm', builtin.marks, { noremap = true })
+                        vim.keymap.set('n', '<leader>fgf', builtin.git_files,
+                                { noremap = true, desc = "Browse git commited files" })
+                        vim.keymap.set('n', '<leader>flg', builtin.live_grep,
+                                { noremap = true, desc = "Browse live grep" })
+                        vim.keymap.set('n', '<leader>fm', builtin.marks, { noremap = true, desc = "Browse Marks" })
                         vim.keymap.set('n', '<leader>fM', function() builtin.man_pages({ sections = { "ALL" } }) end,
-                                { noremap = true })
-                        vim.keymap.set('n', '<leader>fr', builtin.registers, { noremap = true })
-                        vim.keymap.set('n', '<leader>fzf', builtin.current_buffer_fuzzy_find, { noremap = true })
-                        vim.keymap.set('n', '<leader>fc', builtin.commands, { noremap = true })
-                        vim.keymap.set('n', '<leader>fC', builtin.command_history, { noremap = true })
-                        vim.keymap.set('n', '<leader>fS', builtin.search_history, { noremap = true })
-                        vim.keymap.set('n', '<leader>fvo', builtin.vim_options, { noremap = true, desc = "Find git files" })
-                        vim.keymap.set('n', '<leader>fvk', builtin.keymaps, { noremap = true })
-                        vim.keymap.set('n', '<leader>fll', builtin.loclist, { noremap = true })
-                        vim.keymap.set('n', '<leader>fj', builtin.jumplist, { noremap = true })
-                        vim.keymap.set('n', '<leader>fac', builtin.autocommands, { noremap = true })
-                        vim.keymap.set('n', '<leader>fs', builtin.grep_string, { noremap = true })
-                        vim.keymap.set('n', '<leader>fb', builtin.buffers, { noremap = true })
-                        vim.keymap.set('n', '<leader>fh', builtin.help_tags, { noremap = true })
+                                { noremap = true, desc = "Browse man page" })
+                        vim.keymap.set('n', '<leader>fr', builtin.registers,
+                                { noremap = true, desc = "Browse registers" })
+                        vim.keymap.set('n', '<leader>fzf', builtin.current_buffer_fuzzy_find,
+                                { noremap = true, desc = "Fuzzy find current buffer" })
+                        vim.keymap.set('n', '<leader>fc', builtin.commands, { noremap = true, desc = "Browse commands" })
+                        vim.keymap.set('n', '<leader>fC', builtin.command_history,
+                                { noremap = true, desc = "Browse command history" })
+                        vim.keymap.set('n', '<leader>fS', builtin.search_history,
+                                { noremap = true, desc = "Browse search history" })
+                        vim.keymap.set('n', '<leader>fvo', builtin.vim_options,
+                                { noremap = true, desc = "Browse vim options" })
+                        vim.keymap.set('n', '<leader>fvk', builtin.keymaps, { noremap = true, desc = "Browse keymaps" })
+                        vim.keymap.set('n', '<leader>fll', builtin.loclist,
+                                { noremap = true, desc = "Browse location list" })
+                        vim.keymap.set('n', '<leader>fj', builtin.jumplist, { noremap = true, desc = "Browse jump list" })
+                        vim.keymap.set('n', '<leader>fac', builtin.autocommands,
+                                { noremap = true, desc = "Browse autocommands" })
+                        vim.keymap.set('n', '<leader>fs', builtin.grep_string,
+                                { noremap = true, desc = "Browse grep string" })
+                        vim.keymap.set('n', '<leader>fb', builtin.buffers, { noremap = true, desc = "Browse buffers" })
+                        vim.keymap.set('n', '<leader>fh', builtin.help_tags,
+                                { noremap = true, desc = "Browse help tags" })
                 end,
-                keys = {
-                        { '<leader>fgf', desc = "Find git files" },
-                        { '<leader>flg', desc = "Live grep" },
-                        { '<leader>fm',  desc = "Find marks" },
-                        { '<leader>fM',  desc = "Find man page" },
-                        { '<leader>fr',  desc = "Find registers" },
-                        { '<leader>fzf', desc = "Current buffer fuzzy find" },
-                        { '<leader>fc',  desc = "Find commands" },
-                        { '<leader>fS',  desc = "Find search history" },
-                        { '<leader>fvo', desc = "Find vim options" },
-                        { '<leader>fvk', desc = "Find keymaps" },
-                        { '<leader>fll', desc = "Find location list" },
-                        { '<leader>fj',  desc = "Find jump list" },
-                        { '<leader>fac', desc = "Find autocommands" },
-                        { '<leader>fs',  desc = "Grep string" },
-                        { '<leader>fb',  desc = "Find buffers" },
-                        { '<leader>fh',  desc = "Find help tags" },
-                }
         },
         {
                 'LukasPietzschmann/telescope-tabs',
                 config = function()
                         require('telescope').load_extension('telescope-tabs')
                         local tabs = require('telescope-tabs')
-                        vim.keymap.set('n', '<leader>ft', tabs.list_tabs, { noremap = true })
+                        vim.keymap.set('n', '<leader>ft', tabs.list_tabs, { noremap = true, desc = "Browse tabs" })
                 end,
                 dependencies = { 'nvim-telescope/telescope.nvim' },
         },
@@ -101,12 +95,15 @@ return {
                 config = function()
                         require('telescope').load_extension('dap')
                         local teledap = require('telescope').extensions.dap
-                        vim.keymap.set('n', '<leader>fdc', teledap.configurations, { noremap = true })
-                        vim.keymap.set('n', '<leader>fdb', teledap.list_breakpoints, { noremap = true })
-                        vim.keymap.set('n', '<leader>fdv', teledap.variables, { noremap = true })
+                        vim.keymap.set('n', '<leader>fdc', teledap.configurations,
+                                { noremap = true, desc = "Browse DAP configurations" })
+                        vim.keymap.set('n', '<leader>fdb', teledap.list_breakpoints,
+                                { noremap = true, desc = "Browse DAP breakpoints" })
+                        vim.keymap.set('n', '<leader>fdv', teledap.variables,
+                                { noremap = true, desc = "Browse DAP variables" })
                 end,
                 keys = {
-                        { '<leader>fdf', '<cmd>Telescope dap frames', desc = "Find DAP frames" }
+                        { '<leader>fdf', '<cmd>Telescope dap frames', desc = "Browse DAP stack frames" }
                 },
                 dependencies = { 'nvim-telescope/telescope.nvim', 'mfussenegger/nvim-dap' }
         },
@@ -154,7 +151,7 @@ return {
                         -- require('dap.ext.vscode').load_launchjs()
                         require('dapui').setup()
                         dapui = require('dapui')
-                        vim.keymap.set('n', '<Leader>dt', dapui.toggle)
+                        vim.keymap.set('n', '<Leader>dt', dapui.toggle, { desc = "DAP toggle UI" })
                 end,
                 dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" }
         },
@@ -173,7 +170,7 @@ return {
                         require('project_nvim').setup(opts)
                         require('telescope').load_extension('projects')
                         projects = require('telescope').extensions.projects
-                        vim.keymap.set('n', '<Leader>fp', projects.projects)
+                        vim.keymap.set('n', '<Leader>fp', projects.projects, { desc = "Browse projects" })
                 end
         },
         {

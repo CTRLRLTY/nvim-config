@@ -1,13 +1,14 @@
 return {
         {
-                'mfussenegger/nvim-dap', tag = '0.10.0',
+                'mfussenegger/nvim-dap',
+                tag = '0.10.0',
                 config = function()
                         local dap = require("dap")
 
                         dap.configurations = {}
-                        dap.configurations.lua = { 
-                                { 
-                                        type = 'nlua', 
+                        dap.configurations.lua = {
+                                {
+                                        type = 'nlua',
                                         request = 'attach',
                                         name = "Attach to running Neovim instance",
                                 }
@@ -25,7 +26,7 @@ return {
                                         request = 'launch',
                                         name = "example jary",
                                         program = "${file}",
-                                        args = {"./example.jary"},
+                                        args = { "./example.jary" },
                                 }
 
                         }
@@ -54,13 +55,14 @@ return {
                                 pipe = "${pipe}",
                                 executable = {
                                         command = "cmake",
-                                        args = {"--debugger", "--debugger-pipe", "${pipe}", "./build"}
+                                        args = { "--debugger", "--debugger-pipe", "${pipe}", "./build" }
                                 }
                         }
 
+                        local opts = { noremap = true }
+
                         dap.listeners.after["launch"]["__personal__"] = function(s, b)
                                 -- local buf = vim.api.nvim_get_current_buf()
-                                local opts = { noremap = true }
 
                                 vim.print("Setting DAP Maps")
                                 vim.keymap.set('n', 'dc', dap.continue, opts)
@@ -105,9 +107,9 @@ return {
                                         vim.keymap.set('n', '<Leader>di', dap.step_into, opts)
                                         vim.keymap.set('n', '<Leader>df', dap.step_out, opts)
                                         vim.keymap.set('n', '<Leader>db', dap.toggle_breakpoint, opts)
-                                        vim.keymap.set('n', '<Leader>dbc', function() 
+                                        vim.keymap.set('n', '<Leader>dbc', function()
                                                 cond = vim.fn.input("breakpoint condition: ")
-                                                dap.set_breakpoint(cond) 
+                                                dap.set_breakpoint(cond)
                                         end, opts)
                                         vim.keymap.set('n', '<Leader>dB', dap.set_breakpoint, opts)
                                         vim.keymap.set('n', '<Leader>dro', dap.repl.open, opts)
@@ -115,7 +117,6 @@ return {
                                 end,
                                 group = vim.api.nvim_create_augroup('DAP mappings', {}),
                         })
-
                 end,
                 dependencies = { 'leoluz/nvim-dap-go' }
         },
