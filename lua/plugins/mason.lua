@@ -12,6 +12,7 @@ return {
                                 "vimls",
                                 "cmake",
                                 "clangd",
+                                "gopls",
                         },
                         automatic_enable = true,
                 },
