@@ -1,7 +1,6 @@
 return {
         {
                 'neovim/nvim-lspconfig',
-                enabled = false,
                 dependencies = { 'saghen/blink.cmp' },
 
                 -- example using `opts` for defining servers
@@ -18,6 +17,7 @@ return {
                                 config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
                                 lspconfig[server].setup(config)
                         end
-                end
+                end,
+                lazy = false,
         }
 }

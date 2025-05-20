@@ -15,6 +15,7 @@ return {
         { -- optional cmp completion source for require statements and module annotations
                 "hrsh7th/nvim-cmp",
                 opts = function(_, opts)
+                        local cmp = require('cmp')
                         opts.sources = opts.sources or {}
                         table.insert(opts.sources, {
                                 name = "lazydev",
