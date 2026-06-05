@@ -1,107 +1,133 @@
-local widgets = require('dap.ui.widgets')
+local widgets = require("dap.ui.widgets")
 
 -- General {{{
 
-vim.keymap.set('n', '<leader>si', ':source $MYVIMRC<cr>', { noremap = true, desc = "source vimrc" })
-vim.keymap.set('n', '<leader>qc', ':pclose<cr>', { noremap = true, desc = "close preview" })
+vim.keymap.set(
+	"n",
+	"<leader>si",
+	":source $MYVIMRC<cr>",
+	{ noremap = true, desc = "source vimrc" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>qc",
+	":pclose<cr>",
+	{ noremap = true, desc = "close preview" }
+)
 
-vim.keymap.set('n', '<leader>lwa', vim.lsp.buf.add_workspace_folder, { noremap = true, desc = "add workspace folder" })
-vim.keymap.set('n', '<leader>lwd', vim.lsp.buf.remove_workspace_folder,
-        { noremap = true, desc = "remove workspace folder" })
+vim.keymap.set(
+	"n",
+	"<leader>lwa",
+	vim.lsp.buf.add_workspace_folder,
+	{ noremap = true, desc = "add workspace folder" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>lwd",
+	vim.lsp.buf.remove_workspace_folder,
+	{ noremap = true, desc = "remove workspace folder" }
+)
 
-vim.keymap.set('n', '<leader>lwl', function()
-        local dirs = vim.lsp.buf.list_workspace_folders()
-        print(vim.inspect(dirs))
+vim.keymap.set("n", "<leader>lwl", function()
+	local dirs = vim.lsp.buf.list_workspace_folders()
+	print(vim.inspect(dirs))
 end, { noremap = true, desc = "list workspace folders" })
 
-vim.keymap.set('n', '<leader>dl', function()
-        require "osv".launch({ port = 8086 })
+vim.keymap.set("n", "<leader>dl", function()
+	require("osv").launch({ port = 8086 })
 end, { noremap = true, desc = "Launch OSV server" })
 
-vim.keymap.set('n', '<leader>dL', function()
-        require "osv".stop()
-        print("Lua DAP stopped")
+vim.keymap.set("n", "<leader>dL", function()
+	require("osv").stop()
+	print("Lua DAP stopped")
 end, { noremap = true, desc = "Stop OSV server" })
 
-
-vim.keymap.set({ 'n', 'v' }, '<Leader>fdk', widgets.hover, { noremap = true, desc = "DAP hover word" })
-vim.keymap.set({ 'n', 'v' }, '<Leader>fdp', widgets.preview, { noremap = true, desc = "DAP preview word" })
-vim.keymap.set('n', '<Leader>fds', function()
-        widgets.centered_float(widgets.scopes)
+vim.keymap.set(
+	{ "n", "v" },
+	"<Leader>fdk",
+	widgets.hover,
+	{ noremap = true, desc = "DAP hover word" }
+)
+vim.keymap.set(
+	{ "n", "v" },
+	"<Leader>fdp",
+	widgets.preview,
+	{ noremap = true, desc = "DAP preview word" }
+)
+vim.keymap.set("n", "<Leader>fds", function()
+	widgets.centered_float(widgets.scopes)
 end, { noremap = true, desc = "DAP current frame" })
 
-vim.keymap.set('n', '<leader>yfn', function()
-        local line = vim.fn.line(".")
-        local cmd = vim.fn.expand('%') .. ":" .. line
-        vim.fn.setreg("", cmd)
+vim.keymap.set("n", "<leader>yfn", function()
+	local line = vim.fn.line(".")
+	local cmd = vim.fn.expand("%") .. ":" .. line
+	vim.fn.setreg("", cmd)
 end, { noremap = true, desc = "Yank filename" })
-
-
 
 -- }}}
 -- Window {{{
-vim.keymap.set('n', '<leader>th', function()
-        local currenttab = vim.fn.tabpagenr()
-        local totaltabs = vim.fn.tabpagenr('$')
+vim.keymap.set("n", "<leader>th", function()
+	local currenttab = vim.fn.tabpagenr()
+	local totaltabs = vim.fn.tabpagenr("$")
 
-        if currenttab == 1 then
-                print("No previous tab")
-                return
-        end
+	if currenttab == 1 then
+		print("No previous tab")
+		return
+	end
 
-        local currentbuf = vim.api.nvim_get_current_buf()
-        vim.cmd("quit")
-        vim.cmd("tabprevious")
-        vim.cmd("sb" .. currentbuf)
+	local currentbuf = vim.api.nvim_get_current_buf()
+	vim.cmd("quit")
+	vim.cmd("tabprevious")
+	vim.cmd("sb" .. currentbuf)
 end, { noremap = true, desc = "Move buffer to previous tab" })
 
-vim.keymap.set('n', '<leader>tl', function()
-        local currenttab = vim.fn.tabpagenr()
-        local totaltabs = vim.fn.tabpagenr('$')
+vim.keymap.set("n", "<leader>tl", function()
+	local currenttab = vim.fn.tabpagenr()
+	local totaltabs = vim.fn.tabpagenr("$")
 
-        if currenttab == totaltabs then
-                print("No next tab")
-                return
-        end
+	if currenttab == totaltabs then
+		print("No next tab")
+		return
+	end
 
-        local currentbuf = vim.api.nvim_get_current_buf()
-        vim.cmd("quit")
-        vim.cmd("tabnext")
-        vim.cmd("sb" .. currentbuf)
+	local currentbuf = vim.api.nvim_get_current_buf()
+	vim.cmd("quit")
+	vim.cmd("tabnext")
+	vim.cmd("sb" .. currentbuf)
 end, { noremap = true, desc = "Move buffer to next tab" })
 
-vim.keymap.set('n', '<leader>wl', function()
-        local currentwin = vim.api.nvim_get_current_win()
-        local currentbuf = vim.api.nvim_get_current_buf()
+vim.keymap.set("n", "<leader>wl", function()
+	local currentwin = vim.api.nvim_get_current_win()
+	local currentbuf = vim.api.nvim_get_current_buf()
 
-        vim.cmd('wincmd l')
+	vim.cmd("wincmd l")
 
-        local targetwin = vim.api.nvim_get_current_win()
+	local targetwin = vim.api.nvim_get_current_win()
 
-        if targetwin == currentwin then
-                print("No right window")
-                return
-        end
+	if targetwin == currentwin then
+		print("No right window")
+		return
+	end
 
-        vim.api.nvim_win_close(currentwin, false)
-        vim.cmd("sb" .. currentbuf)
+	vim.api.nvim_win_close(currentwin, false)
+	vim.cmd("sb" .. currentbuf)
 end, { noremap = true, desc = "Stack window to right" })
 
-vim.keymap.set('n', '<leader>wh', function()
-        local currentwin = vim.api.nvim_get_current_win()
-        local currentbuf = vim.api.nvim_get_current_buf()
+vim.keymap.set("n", "<leader>wh", function()
+	local currentwin = vim.api.nvim_get_current_win()
+	local currentbuf = vim.api.nvim_get_current_buf()
 
-        vim.cmd('wincmd h')
+	vim.cmd("wincmd h")
 
-        local targetwin = vim.api.nvim_get_current_win()
+	local targetwin = vim.api.nvim_get_current_win()
 
-        if targetwin == currentwin then
-                print("No left window")
-                return
-        end
+	if targetwin == currentwin then
+		print("No left window")
+		return
+	end
 
-        vim.api.nvim_win_close(currentwin, false)
-        vim.cmd("sb" .. currentbuf)
+	vim.api.nvim_win_close(currentwin, false)
+	vim.cmd("sb" .. currentbuf)
 end, { noremap = true, desc = "Stack window to left" })
 
 ---- open directory listing
