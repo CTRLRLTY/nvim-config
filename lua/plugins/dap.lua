@@ -2,6 +2,12 @@ local function attach_dap_keymap()
 	local dap = require("dap")
 	-- local buf = vim.api.nvim_get_current_buf()
 
+	if vim.b.dap_keymap_set then
+		return
+	end
+
+	vim.b.dap_keymap_set = true
+
 	vim.print("Setting DAP Maps")
 	vim.keymap.set("n", "dc", dap.continue, {
 		noremap = true,
@@ -55,6 +61,8 @@ end
 
 local function dettach_dap_keymap()
 	local opts = { noremap = true }
+
+	vim.b.dap_keymap_set = false
 
 	vim.print("Deleting DAP Maps")
 	vim.keymap.del("n", "dc", opts)

@@ -61,6 +61,54 @@ end
 
 return {
 	{
+		"romgrk/barbar.nvim",
+		dependencies = {
+			"lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
+			"nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
+		},
+		init = function()
+			vim.g.barbar_auto_setup = false
+		end,
+		config = function(_, opts)
+			require("barbar").setup(opts)
+
+			vim.keymap.set("n", "gt", "<Cmd>BufferNext<CR>", {
+				noremap = false,
+				silent = true,
+				desc = "Go to next buffer",
+			})
+
+			vim.keymap.set(
+				"n",
+				"gT",
+				"<Cmd>BufferPrevious<CR>",
+				{
+					noremap = false,
+					silent = true,
+					desc = "Go to previous buffer",
+				}
+			)
+
+			vim.keymap.set(
+				"n",
+				"<leader>wb",
+				"<Cmd>BufferPick<CR>",
+				{ noremap = true, desc = "Tab buffer pick" }
+			)
+
+			vim.keymap.set(
+				"n",
+				"<leader>wB",
+				"<Cmd>BufferPickDelete<CR>",
+				{
+					noremap = true,
+					desc = "Tab buffer pick delete",
+				}
+			)
+		end,
+		version = "^1.0.0", -- optional: only update when a new 1.x version is released
+	},
+	{
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.8",
 		dependencies = { "nvim-lua/plenary.nvim" },
