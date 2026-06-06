@@ -45,7 +45,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		local builtin = require("telescope.builtin")
 
-		wrkspace = vim.lsp.buf.list_workspace_folders()[1]
+		local wrkspace = vim.lsp.buf.list_workspace_folders()[1]
 
 		if not wrkspace == nil then
 			vim.uv.chdir(wrkspace)
