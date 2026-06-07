@@ -195,23 +195,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		vim.keymap.set(
 			"n",
-			"<leader>lww",
-			function()
-				print(
-					vim.inspect(
-						vim.lsp.buf.list_workspace_folders()
-					)
-				)
-			end,
-			vim.tbl_extend(
-				"force",
-				opts,
-				{ desc = "LSP list workspaces" }
-			)
-		)
-
-		vim.keymap.set(
-			"n",
 			"<leader>cfmt",
 			format_buffer,
 			vim.tbl_extend("force", opts, { desc = "LSP format" })
