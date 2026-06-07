@@ -6,7 +6,8 @@ local function open_oil_workspace()
 	local actions = require("telescope.actions")
 	local action_state = require("telescope.actions.state")
 
-	local folders = vim.lsp.buf.list_workspace_folders()
+	local raw = vim.fn.uniq(vim.lsp.buf.list_workspace_folders())
+	local folders = type(raw) == "table" and raw or {}
 
 	-- build entries
 	local entries = {
@@ -47,30 +48,50 @@ end
 
 function search_string()
 	local builtin = require("telescope.builtin")
-	local folders = vim.lsp.buf.list_workspace_folders()
+	local pickers = require("telescope.pickers")
+	local finders = require("telescope.finders")
+	local conf = require("telescope.config").values
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
 
-	if #folders == 0 then
-		builtin.grep_string({ cwd = vim.fn.getcwd() })
-		return
+	local raw = vim.fn.uniq(vim.lsp.buf.list_workspace_folders())
+	local folders = type(raw) == "table" and raw or {}
+
+	-- build entries
+	local entries = {
+		{ label = "cwd: " .. vim.fn.getcwd(), path = vim.fn.getcwd() },
+	}
+	for _, folder in ipairs(folders) do
+		table.insert(
+			entries,
+			{ label = "workspace: " .. folder, path = folder }
+		)
 	end
 
-	if #folders == 1 then
-		builtin.grep_string({ cwd = folders[1] })
-		return
-	end
-
-	vim.ui.select(
-		folders,
-		{ prompt = " Select workspace root:" },
-		function(choice)
-			if not choice then
-				return
-			end
-			builtin.grep_string({ cwd = choice })
-		end
-	)
-
-	builtin.grep_string({ cwd = folders[1] })
+	pickers.new({}, {
+		prompt_title = "Grep string from root",
+		finder = finders.new_table({
+			results = entries,
+			entry_maker = function(entry)
+				return {
+					value = entry.path,
+					display = entry.label,
+					ordinal = entry.label,
+				}
+			end,
+		}),
+		sorter = conf.generic_sorter({}),
+		attach_mappings = function(bufnr)
+			actions.select_default:replace(function()
+				actions.close(bufnr)
+				local sel = action_state.get_selected_entry()
+				if sel then
+					builtin.grep_string({ cwd = sel.value })
+				end
+			end)
+			return true
+		end,
+	}):find()
 end
 
 function dap_go_program()

@@ -30,7 +30,8 @@ vim.keymap.set(
 
 vim.keymap.set("n", "<leader>lwl", function()
 	local dirs = vim.lsp.buf.list_workspace_folders()
-	print(vim.inspect(dirs))
+	local uniq = vim.fn.uniq(dirs)
+	print(vim.inspect(uniq))
 end, { noremap = true, desc = "list workspace folders" })
 
 vim.keymap.set("n", "<leader>dl", function()
