@@ -1,5 +1,8 @@
-local function open_oil_workspace()
-	local oil = require("oil")
+---@alias RootSelectCallback fun(root: string): nil
+
+---@param title string
+---@param on_select RootSelectCallback
+local function pick_root(title, on_select)
 	local pickers = require("telescope.pickers")
 	local finders = require("telescope.finders")
 	local conf = require("telescope.config").values
@@ -9,7 +12,6 @@ local function open_oil_workspace()
 	local raw = vim.fn.uniq(vim.lsp.buf.list_workspace_folders())
 	local folders = type(raw) == "table" and raw or {}
 
-	-- build entries
 	local entries = {
 		{ label = "cwd: " .. vim.fn.getcwd(), path = vim.fn.getcwd() },
 	}
@@ -21,7 +23,7 @@ local function open_oil_workspace()
 	end
 
 	pickers.new({}, {
-		prompt_title = "Open Oil",
+		prompt_title = title,
 		finder = finders.new_table({
 			results = entries,
 			entry_maker = function(entry)
@@ -38,7 +40,9 @@ local function open_oil_workspace()
 				actions.close(bufnr)
 				local sel = action_state.get_selected_entry()
 				if sel then
-					oil.open_float(sel.value)
+					vim.defer_fn(function()
+						on_select(sel.value)
+					end, 10)
 				end
 			end)
 			return true
@@ -46,52 +50,14 @@ local function open_oil_workspace()
 	}):find()
 end
 
-function search_string()
-	local builtin = require("telescope.builtin")
-	local pickers = require("telescope.pickers")
-	local finders = require("telescope.finders")
-	local conf = require("telescope.config").values
-	local actions = require("telescope.actions")
-	local action_state = require("telescope.actions.state")
+local function open_oil_workspace()
+	pick_root("Open oil from root", require("oil").open_float)
+end
 
-	local raw = vim.fn.uniq(vim.lsp.buf.list_workspace_folders())
-	local folders = type(raw) == "table" and raw or {}
-
-	-- build entries
-	local entries = {
-		{ label = "cwd: " .. vim.fn.getcwd(), path = vim.fn.getcwd() },
-	}
-	for _, folder in ipairs(folders) do
-		table.insert(
-			entries,
-			{ label = "workspace: " .. folder, path = folder }
-		)
-	end
-
-	pickers.new({}, {
-		prompt_title = "Grep string from root",
-		finder = finders.new_table({
-			results = entries,
-			entry_maker = function(entry)
-				return {
-					value = entry.path,
-					display = entry.label,
-					ordinal = entry.label,
-				}
-			end,
-		}),
-		sorter = conf.generic_sorter({}),
-		attach_mappings = function(bufnr)
-			actions.select_default:replace(function()
-				actions.close(bufnr)
-				local sel = action_state.get_selected_entry()
-				if sel then
-					builtin.grep_string({ cwd = sel.value })
-				end
-			end)
-			return true
-		end,
-	}):find()
+local function search_live_string()
+	pick_root("Grep string from root", function(root)
+		require("telescope.builtin").live_grep({ cwd = root })
+	end)
 end
 
 function dap_go_program()
@@ -217,7 +183,7 @@ return {
 			vim.keymap.set(
 				"n",
 				"<leader>flg",
-				builtin.live_grep,
+				search_live_string,
 				{ noremap = true, desc = "Browse live grep" }
 			)
 			vim.keymap.set(
@@ -296,12 +262,7 @@ return {
 				builtin.autocommands,
 				{ noremap = true, desc = "Browse autocommands" }
 			)
-			vim.keymap.set(
-				"n",
-				"<leader>fs",
-				search_string,
-				{ noremap = true, desc = "Browse grep string" }
-			)
+
 			vim.keymap.set(
 				"n",
 				"<leader>fb",
