@@ -1,3 +1,50 @@
+local function open_oil_workspace()
+	local oil = require("oil")
+	local pickers = require("telescope.pickers")
+	local finders = require("telescope.finders")
+	local conf = require("telescope.config").values
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
+
+	local folders = vim.lsp.buf.list_workspace_folders()
+
+	-- build entries
+	local entries = {
+		{ label = "cwd: " .. vim.fn.getcwd(), path = vim.fn.getcwd() },
+	}
+	for _, folder in ipairs(folders) do
+		table.insert(
+			entries,
+			{ label = "workspace: " .. folder, path = folder }
+		)
+	end
+
+	pickers.new({}, {
+		prompt_title = "Open Oil",
+		finder = finders.new_table({
+			results = entries,
+			entry_maker = function(entry)
+				return {
+					value = entry.path,
+					display = entry.label,
+					ordinal = entry.label,
+				}
+			end,
+		}),
+		sorter = conf.generic_sorter({}),
+		attach_mappings = function(bufnr)
+			actions.select_default:replace(function()
+				actions.close(bufnr)
+				local sel = action_state.get_selected_entry()
+				if sel then
+					oil.open_float(sel.value)
+				end
+			end)
+			return true
+		end,
+	}):find()
+end
+
 function search_string()
 	local builtin = require("telescope.builtin")
 	local folders = vim.lsp.buf.list_workspace_folders()
@@ -78,16 +125,11 @@ return {
 				desc = "Go to next buffer",
 			})
 
-			vim.keymap.set(
-				"n",
-				"gT",
-				"<Cmd>BufferPrevious<CR>",
-				{
-					noremap = false,
-					silent = true,
-					desc = "Go to previous buffer",
-				}
-			)
+			vim.keymap.set("n", "gT", "<Cmd>BufferPrevious<CR>", {
+				noremap = false,
+				silent = true,
+				desc = "Go to previous buffer",
+			})
 
 			vim.keymap.set(
 				"n",
@@ -413,9 +455,7 @@ return {
 		keys = {
 			{
 				"<leader>od",
-				function()
-					require("oil").open_float()
-				end,
+				open_oil_workspace,
 				desc = "Open parent directory",
 			},
 		},
