@@ -13,7 +13,10 @@ local function pick_root(title, on_select)
 	local folders = type(raw) == "table" and raw or {}
 
 	local entries = {
-		{ label = "cwd: " .. vim.fn.getcwd(), path = vim.fn.getcwd() },
+		{
+			label = "cd: " .. vim.fn.expand("%:p:h"),
+			path = vim.fn.expand("%:p:h"),
+		},
 	}
 	for _, folder in ipairs(folders) do
 		table.insert(
