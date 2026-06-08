@@ -24,5 +24,6 @@
   "telescope-dap.nvim": { "branch": "master", "commit": "783366bd6c1e7fa0a5c59c07db37f49c805a28df" },
   "telescope-tabs": { "branch": "master", "commit": "62c127346c04c698c0cbd1c1ba945609a0ad10db" },
   "telescope.nvim": { "branch": "master", "commit": "a0bbec21143c7bc5f8bb02e0005fa0b982edc026" },
+  "vim-fugitive": { "branch": "master", "commit": "96c1009fcf8ce60161cc938d149dd5a66d570756" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" }
 }
