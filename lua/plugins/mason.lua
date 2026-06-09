@@ -13,6 +13,7 @@ return {
 				"cmake",
 				"clangd",
 				"gopls",
+				"jedi_language_server",
 			},
 			automatic_enable = true,
 		},
