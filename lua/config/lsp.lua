@@ -43,8 +43,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		if not wrkspace == nil then
 			vim.uv.chdir(wrkspace)
-		else
-			vim.notify("LSP: no workspace found", "warn")
 		end
 	end,
 })
