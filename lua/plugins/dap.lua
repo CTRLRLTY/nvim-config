@@ -59,24 +59,6 @@ local function attach_dap_keymap()
 	)
 end
 
-local function dettach_dap_keymap()
-	local opts = { noremap = true }
-
-	vim.b.dap_keymap_set = false
-
-	vim.print("Deleting DAP Maps")
-	vim.keymap.del("n", "dc", opts)
-	vim.keymap.del("n", "ds", opts)
-	vim.keymap.del("n", "dz", opts)
-	vim.keymap.del("n", "di", opts)
-	vim.keymap.del("n", "df", opts)
-	vim.keymap.del("n", "db", opts)
-	vim.keymap.del("n", "dB", opts)
-	vim.keymap.del("n", "dbc", opts)
-	vim.keymap.del("n", "dro", opts)
-	vim.keymap.del("n", "drl", opts)
-end
-
 return {
 	{
 		"mfussenegger/nvim-dap",
@@ -151,13 +133,6 @@ return {
 				b --[[@as table]]
 			)
 				attach_dap_keymap()
-			end
-
-			dap.listeners.after["event_terminated"]["__personal__"] = function(
-				s, --[[@as dap.Session]]
-				b --[[@as table]]
-			)
-				dettach_dap_keymap()
 			end
 
 			vim.api.nvim_create_autocmd("FileType", {
