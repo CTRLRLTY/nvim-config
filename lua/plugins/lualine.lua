@@ -5,10 +5,11 @@ return {
 			theme = "gruvbox",
 			tabline = {
 				lualine_a = { { "tabs", mode = 2 } },
+				lualine_z = { "lsp_status" },
 			},
 			sections = {
 				lualine_c = {
-					{ "filename", path = 3 },
+					{ "filename", path = 1 },
 				},
 			},
 			extensions = {
