@@ -9,41 +9,41 @@ local function attach_dap_keymap()
 	vim.b.dap_keymap_set = true
 
 	vim.print("Setting DAP Maps")
-	vim.keymap.set("n", "dc", dap.continue, {
+	vim.keymap.set("n", "<leader>dc", dap.continue, {
 		noremap = true,
 		desc = "DAP Continue",
 	})
-	vim.keymap.set("n", "ds", dap.step_over, {
+	vim.keymap.set("n", "<leader>ds", dap.step_over, {
 		noremap = true,
 		desc = "DAP Step over",
 	})
-	vim.keymap.set("n", "dz", dap.disconnect, {
+	vim.keymap.set("n", "<leader>dz", dap.disconnect, {
 		noremap = true,
 		desc = "DAP Disconnect",
 	})
-	vim.keymap.set("n", "di", dap.step_into, {
+	vim.keymap.set("n", "<leader>di", dap.step_into, {
 		noremap = true,
 		desc = "DAP Step into",
 	})
-	vim.keymap.set("n", "df", dap.step_out, {
+	vim.keymap.set("n", "<leader>df", dap.step_out, {
 		noremap = true,
 		desc = "DAP Step Out",
 	})
 	vim.keymap.set(
 		"n",
-		"db",
+		"<leader>db",
 		dap.toggle_breakpoint,
 		{ noremap = true, desc = "DAP Toggle breakpoint" }
 	)
 	vim.keymap.set(
 		"n",
-		"dB",
+		"<leader>dB",
 		dap.set_breakpoint,
 		{ noremap = true, desc = "DAP Set breakpoint" }
 	)
 	vim.keymap.set(
 		"n",
-		"dro",
+		"<leader>dro",
 		dap.repl.open,
 		{ noremap = true, desc = "DAP Open REPL" }
 	)
@@ -53,7 +53,7 @@ local function attach_dap_keymap()
 	end, { noremap = true, desc = "DAP Set breakpoint condition" })
 	vim.keymap.set(
 		"n",
-		"drl",
+		"<leader>drl",
 		dap.run_last,
 		{ noremap = true, desc = "DAP Run last configuration" }
 	)
