@@ -4,19 +4,6 @@ local function format_buffer()
 	require("conform").format({ async = true, lsp_fallback = true })
 end
 
-vim.api.nvim_create_autocmd("BufEnter", {
-	group = ag_lsp_config,
-	callback = function(ev)
-		local has_lsp = #vim.lsp.get_clients({ bufnr = ev.buf }) > 0
-
-		if not has_lsp then
-			vim.wo.colorcolumn = "80"
-		else
-			vim.wo.colorcolumn = ""
-		end
-	end,
-})
-
 vim.api.nvim_create_autocmd("BufWrite", {
 	group = ag_lsp_config,
 	callback = function(ev)
