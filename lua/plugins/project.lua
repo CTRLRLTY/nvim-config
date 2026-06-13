@@ -13,7 +13,8 @@ return {
 		config = function(_, opts)
 			require("project_nvim").setup(opts)
 			require("telescope").load_extension("projects")
-			projects = require("telescope").extensions.projects
+			local projects =
+				require("telescope").extensions.projects
 			vim.keymap.set(
 				"n",
 				"<Leader>fp",
