@@ -1,66 +1,6 @@
----@alias RootSelectCallback fun(root: string): nil
-
----@param title string
----@param on_select RootSelectCallback
-local function pick_root(title, on_select)
-	local pickers = require("telescope.pickers")
-	local finders = require("telescope.finders")
-	local conf = require("telescope.config").values
-	local actions = require("telescope.actions")
-	local action_state = require("telescope.actions.state")
-
-	local raw = vim.fn.uniq(vim.lsp.buf.list_workspace_folders())
-	local folders = type(raw) == "table" and raw or {}
-
-	local entries = {
-		{
-			label = "cd: " .. vim.fn.expand("%:p:h"),
-			path = vim.fn.expand("%:p:h"),
-		},
-	}
-	for _, folder in ipairs(folders) do
-		table.insert(
-			entries,
-			{ label = "workspace: " .. folder, path = folder }
-		)
-	end
-
-	pickers.new({}, {
-		prompt_title = title,
-		finder = finders.new_table({
-			results = entries,
-			entry_maker = function(entry)
-				return {
-					value = entry.path,
-					display = entry.label,
-					ordinal = entry.label,
-				}
-			end,
-		}),
-		sorter = conf.generic_sorter({}),
-		attach_mappings = function(bufnr)
-			actions.select_default:replace(function()
-				actions.close(bufnr)
-				local sel = action_state.get_selected_entry()
-				if sel then
-					vim.defer_fn(function()
-						on_select(sel.value)
-					end, 10)
-				end
-			end)
-			return true
-		end,
-	}):find()
-end
-
-local function search_live_string()
-	pick_root("Grep string from root", function(root)
-		require("telescope.builtin").live_grep({ cwd = root })
-	end)
-end
-
 local function set_keymap()
 	local builtin = require("telescope.builtin")
+	local config = require("config.telescope")
 
 	vim.keymap.set("n", "<leader>fF", function()
 		local root = vim.lsp.buf.list_workspace_folders()[1]
@@ -96,7 +36,7 @@ local function set_keymap()
 	vim.keymap.set(
 		"n",
 		"<leader>flg",
-		search_live_string,
+		config.live_string,
 		{ noremap = true, desc = "Browse live grep" }
 	)
 	vim.keymap.set(
