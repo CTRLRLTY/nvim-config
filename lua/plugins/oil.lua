@@ -15,9 +15,14 @@ return {
 		},
 		keys = {
 			{
-				"<leader>od",
+				"<leader>odw",
 				require("config.oil").open_workspace,
-				desc = "Open parent directory",
+				desc = "Open active workspace",
+			},
+			{
+				"<leader>odc",
+				require("config.oil").open_cwd,
+				desc = "Open current directory",
 			},
 		},
 		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
