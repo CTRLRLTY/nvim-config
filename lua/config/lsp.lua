@@ -1,3 +1,22 @@
+local M = {}
+
+function M.workspaces()
+	local dirs = vim.lsp.buf.list_workspace_folders()
+	local uniq = vim.fn.uniq(dirs)
+
+	return uniq
+end
+
+function M.active_workspace()
+	local folders = M.workspaces()
+
+	if #folders >= 1 then
+		return folders[1]
+	end
+
+	return vim.fn.expand("%:p:h")
+end
+
 local ag_lsp_config = vim.api.nvim_create_augroup("UserLspConfig", {})
 
 local function format_buffer()
@@ -33,3 +52,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 	end,
 })
+
+return M
