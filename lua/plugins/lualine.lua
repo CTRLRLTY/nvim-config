@@ -4,7 +4,12 @@ return {
 		opts = {
 			theme = "gruvbox",
 			tabline = {
-				lualine_a = { "tabs" },
+				lualine_a = { { "tabs", mode = 2 } },
+			},
+			sections = {
+				lualine_c = {
+					{ "filename", path = 3 },
+				},
 			},
 			extensions = {
 				"quickfix",
