@@ -1,36 +1,3 @@
-function dap_go_program()
-	local routine = function(dap_run_co)
-		require("telescope.builtin").git_files({
-			prompt_title = "Select File to Debug",
-			file_ignore_patterns = { "([^g][^o])$" },
-			attach_mappings = function(_, map)
-				local actions = require("telescope.actions")
-				local state = require("telescope.actions.state")
-
-				actions.select_default:replace(
-					function(prompt_bufnr)
-						local entry =
-							state.get_selected_entry()
-						local file_path = entry.path
-							or entry.filename
-
-						vim.print(file_path)
-						actions.close(prompt_bufnr)
-						coroutine.resume(
-							dap_run_co,
-							file_path
-						)
-					end
-				)
-
-				return true
-			end,
-		})
-	end
-
-	return coroutine.create(routine)
-end
-
 return {
 	-- {
 	-- 	"romgrk/barbar.nvim",
@@ -145,23 +112,6 @@ return {
 			})
 		end,
 		lazy = false,
-	},
-	{
-		"leoluz/nvim-dap-go",
-		opts = {
-			dap_configurations = {
-				{
-					type = "go",
-					name = "Debug Project",
-					request = "launch",
-					program = dap_go_program,
-				},
-			},
-		},
-		dependencies = {
-			"mfussenegger/nvim-dap",
-			"nvim-treesitter/nvim-treesitter",
-		},
 	},
 	{
 		"rcarriga/nvim-dap-ui",
