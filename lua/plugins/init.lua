@@ -1,24 +1,5 @@
 return {
 	{
-		"rcarriga/nvim-dap-ui",
-		tag = "v4.0.0",
-		config = function()
-			-- require('dap.ext.vscode').load_launchjs()
-			require("dapui").setup()
-			dapui = require("dapui")
-			vim.keymap.set(
-				"n",
-				"<Leader>dt",
-				dapui.toggle,
-				{ desc = "DAP toggle UI" }
-			)
-		end,
-		dependencies = {
-			"mfussenegger/nvim-dap",
-			"nvim-neotest/nvim-nio",
-		},
-	},
-	{
 		"ahmedkhalf/project.nvim",
 		dependencies = { "nvim-telescope/telescope.nvim" },
 		opts = {
