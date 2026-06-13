@@ -142,8 +142,14 @@ return {
 	-- },
 	{
 		"nvim-telescope/telescope.nvim",
-		tag = "0.1.8",
-		dependencies = { "nvim-lua/plenary.nvim" },
+		version = "*",
+		dependencies = {
+			"nvim-lua/plenary.nvim", -- optional but recommended
+			{
+				"nvim-telescope/telescope-fzf-native.nvim",
+				build = "make",
+			},
+		},
 		config = function(_, opts)
 			require("telescope").setup(opts)
 			local builtin = require("telescope.builtin")
@@ -348,24 +354,6 @@ return {
 				nested = true,
 			})
 		end,
-		lazy = false,
-	},
-	{
-		"nvim-treesitter/nvim-treesitter",
-		tag = "v0.9.3",
-		priority = 1000,
-		opts = {
-			ensure_installed = {
-				"go",
-				"c",
-				"lua",
-				"vim",
-				"vimdoc",
-				"query",
-				"markdown",
-				"markdown_inline",
-			},
-		},
 		lazy = false,
 	},
 	{
