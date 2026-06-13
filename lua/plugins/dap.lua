@@ -151,6 +151,5 @@ return {
 				),
 			})
 		end,
-		dependencies = { "leoluz/nvim-dap-go" },
 	},
 }
