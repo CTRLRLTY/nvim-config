@@ -1,8 +1,3 @@
-local function open_oil_workspace()
-	config = require("config.telescope")
-	config.pick_root("Open oil from root", require("oil").open_float)
-end
-
 function dap_go_program()
 	local routine = function(dap_run_co)
 		require("telescope.builtin").git_files({
@@ -209,29 +204,5 @@ return {
 				{ desc = "Browse projects" }
 			)
 		end,
-	},
-	{
-		"stevearc/oil.nvim",
-		---@module 'oil'
-		---@type oil.SetupOpts
-		opts = {
-			view_options = {
-				show_hidden = true,
-			},
-		},
-		-- Optional dependencies
-		dependencies = {
-			{ "echasnovski/mini.icons", config = true },
-			"nvim-telescope/telescope.nvim",
-		},
-		keys = {
-			{
-				"<leader>od",
-				open_oil_workspace,
-				desc = "Open parent directory",
-			},
-		},
-		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-		lazy = false,
 	},
 }
