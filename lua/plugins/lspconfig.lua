@@ -134,6 +134,7 @@ end
 ---@param bufnr integer
 local function on_attach_jedi(client, bufnr)
 	setup_lsp_keymap(bufnr)
+	client.server_capabilities.hoverProvider = false
 end
 
 ---@param client vim.lsp.Client
@@ -142,8 +143,7 @@ local function on_attach_basedpyright(client, bufnr)
 	setup_lsp_keymap(bufnr)
 	client.server_capabilities.renameProvider = false
 	client.server_capabilities.referencesProvider = false
-	client.server_capabilities.hoverProvider = false
-	client.server_capabilities.definitionProvider = false
+	-- client.server_capabilities.definitionProvider = false
 end
 
 local function lsp_config(servers)
