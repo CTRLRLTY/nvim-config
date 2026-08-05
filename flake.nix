@@ -27,7 +27,7 @@
           fd
 
           # Language runtimes and providers
-          nodejs_20
+          nodejs
           go
           (python3.withPackages (ps: with ps; [ pynvim ]))
 
