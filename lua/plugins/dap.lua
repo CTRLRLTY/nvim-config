@@ -109,8 +109,7 @@ return {
 
 			dap.adapters.python = {
 				type = "executable",
-				command = os.getenv("HOME")
-					.. "/pyenv/bin/python",
+				command = "python3",
 				args = { "-m", "debugpy.adapter" },
 			}
 
