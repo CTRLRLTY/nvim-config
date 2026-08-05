@@ -29,7 +29,7 @@
           # Language runtimes and providers
           nodejs
           go
-          (python3.withPackages (ps: with ps; [ pynvim ]))
+          (python3.withPackages (ps: with ps; [ pynvim debugpy ]))
 
           # Clipboard integration
           xclip
