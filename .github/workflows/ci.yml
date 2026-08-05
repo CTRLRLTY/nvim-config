@@ -26,6 +26,11 @@ jobs:
       - name: Build Neovim Environment
         run: nix build .
 
+      - name: Symlink Configuration to Standard Path
+        run: |
+          mkdir -p ~/.config
+          ln -s "$GITHUB_WORKSPACE" ~/.config/nvim
+
       - name: Headless Plugin Sync & Health Check
         run: |
           nix run . -- --headless "+Lazy! sync" +qa
