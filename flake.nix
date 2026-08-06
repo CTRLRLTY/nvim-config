@@ -43,7 +43,7 @@
           buildInputs = [ pkgs.makeWrapper ];
           postBuild = ''
             wrapProgram $out/bin/nvim \
-              --prefix PATH : ${pkgs.lib.makeBinPath runtimeDeps}
+              --suffix PATH : ${pkgs.lib.makeBinPath runtimeDeps}
           '';
         };
       in
