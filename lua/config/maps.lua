@@ -65,6 +65,14 @@ vim.keymap.set("n", "<leader>yfn", function()
 	vim.fn.setreg("", cmd)
 end, { noremap = true, desc = "Yank filename" })
 
+vim.keymap.set("n", "<leader>sp", function()
+	require("config.python").select_python_interpreter()
+end, { noremap = true, desc = "Select Python Interpreter (Telescope)" })
+
+vim.keymap.set("n", "<leader>sP", function()
+	require("config.python").show_active_python_info()
+end, { noremap = true, desc = "Show Active Python LSP Info" })
+
 -- }}}
 -- Window {{{
 vim.keymap.set("n", "<leader>th", function()
