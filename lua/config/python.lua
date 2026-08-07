@@ -4,6 +4,43 @@
 
 local M = {}
 
+--- Currently selected Python interpreter path for LSP from Telescope picker
+---@type string|nil
+M.selected_python_path = nil
+
+--- Currently selected Python interpreter path for DAP from Telescope picker
+---@type string|nil
+M.selected_dap_python_path = nil
+
+--- Get active Python executable for LSP.
+---@return string
+function M.get_python_executable()
+	if M.selected_python_path and M.selected_python_path ~= "" and vim.fn.executable(M.selected_python_path) == 1 then
+		return M.selected_python_path
+	end
+
+	local interpreters = M.find_python_interpreters()
+	if #interpreters > 0 then
+		return interpreters[1].path
+	end
+
+	local sys_py = vim.fn.exepath("python3")
+	if sys_py and sys_py ~= "" then
+		return sys_py
+	end
+
+	return "python3"
+end
+
+--- Get active Python executable for DAP debugging sessions.
+---@return string
+function M.get_dap_python_executable()
+	if M.selected_dap_python_path and M.selected_dap_python_path ~= "" and vim.fn.executable(M.selected_dap_python_path) == 1 then
+		return M.selected_dap_python_path
+	end
+	return M.get_python_executable()
+end
+
 --- Search for Python executables in VIRTUAL_ENV, local .venv, tool directories, and PATH.
 ---@return PythonInterpreterEntry[]
 function M.find_python_interpreters()
@@ -68,8 +105,10 @@ function M.find_python_interpreters()
 end
 
 --- Select a Python interpreter via Telescope.
+---@param title string
+---@param on_select fun(path: string)
 ---@return nil
-function M.select_python_interpreter()
+function M.select_python_interpreter(title, on_select)
 	local pickers = require("telescope.pickers")
 	local finders = require("telescope.finders")
 	local conf = require("telescope.config").values
@@ -79,12 +118,12 @@ function M.select_python_interpreter()
 	local interpreters = M.find_python_interpreters()
 
 	if #interpreters == 0 then
-		vim.notify("No Python interpreters found.", vim.log.levels.WARN, { title = "LSP Python Setup" })
+		vim.notify("No Python interpreters found.", vim.log.levels.WARN, { title = title })
 		return
 	end
 
 	pickers.new({}, {
-		prompt_title = "Select Python Interpreter for LSP",
+		prompt_title = title,
 		finder = finders.new_table({
 			results = interpreters,
 			---@param entry PythonInterpreterEntry
@@ -102,12 +141,33 @@ function M.select_python_interpreter()
 				actions.close(bufnr)
 				local sel = action_state.get_selected_entry()
 				if sel and type(sel.value) == "string" then
-					M.set_python_interpreter(sel.value)
+					on_select(sel.value)
 				end
 			end)
 			return true
 		end,
 	}):find()
+end
+
+--- Select a Python interpreter for LSP via Telescope.
+---@return nil
+function M.select_lsp_python_interpreter()
+	M.select_python_interpreter("Select Python Interpreter for LSP", function(path)
+		M.set_python_interpreter(path)
+	end)
+end
+
+--- Select a Python interpreter for DAP via Telescope.
+---@return nil
+function M.select_dap_python_interpreter()
+	M.select_python_interpreter("Select Python Interpreter for DAP", function(path)
+		M.selected_dap_python_path = path
+		vim.notify(
+			"Selected DAP Python Interpreter:\n" .. path,
+			vim.log.levels.INFO,
+			{ title = "DAP Python Setup" }
+		)
+	end)
 end
 
 --- Get active LSP clients attached to Python buffers.
@@ -207,6 +267,8 @@ function M.show_active_python_info()
 				.. ")"
 		)
 	end
+
+	table.insert(lines, "DAP Python Adapter: " .. M.get_dap_python_executable())
 
 	local clients = M.get_python_lsp_clients()
 	if #clients > 0 then

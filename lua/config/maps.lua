@@ -66,8 +66,12 @@ vim.keymap.set("n", "<leader>yfn", function()
 end, { noremap = true, desc = "Yank filename" })
 
 vim.keymap.set("n", "<leader>sp", function()
-	require("config.python").select_python_interpreter()
-end, { noremap = true, desc = "Select Python Interpreter (Telescope)" })
+	require("config.python").select_lsp_python_interpreter()
+end, { noremap = true, desc = "Select Python Interpreter for LSP (Telescope)" })
+
+vim.keymap.set("n", "<leader>sdp", function()
+	require("config.python").select_dap_python_interpreter()
+end, { noremap = true, desc = "Select Python Interpreter for DAP (Telescope)" })
 
 vim.keymap.set("n", "<leader>sP", function()
 	require("config.python").show_active_python_info()

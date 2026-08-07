@@ -107,11 +107,15 @@ return {
 				})
 			end
 
-			dap.adapters.python = {
-				type = "executable",
-				command = "python3",
-				args = { "-m", "debugpy.adapter" },
-			}
+			dap.adapters.python = function(callback, config)
+				local python_path =
+					require("config.python").get_dap_python_executable()
+				callback({
+					type = "executable",
+					command = python_path,
+					args = { "-m", "debugpy.adapter" },
+				})
+			end
 
 			dap.adapters.cmake = {
 				type = "pipe",
