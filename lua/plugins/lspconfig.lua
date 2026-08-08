@@ -54,6 +54,12 @@ local function setup_lsp_keymap(bufnr)
 			{ desc = "LSP show workspace symbols" }
 		)
 	)
+
+	vim.keymap.set("n", "<leader>svt", function()
+		local new_config = not vim.diagnostic.config().virtual_lines
+		vim.diagnostic.config({ virtual_lines = new_config })
+	end, { desc = "Toggle diagnostic virtual_lines" })
+
 	vim.keymap.set(
 		"n",
 		"<leader>sr",
@@ -135,6 +141,7 @@ end
 local function on_attach_jedi(client, bufnr)
 	setup_lsp_keymap(bufnr)
 	client.server_capabilities.hoverProvider = false
+	client.server_capabilities.completionProvider = false
 end
 
 ---@param client vim.lsp.Client
