@@ -2,7 +2,7 @@ return {
 	{
 		"nvim-lualine/lualine.nvim",
 		opts = {
-			theme = "gruvbox",
+			theme = "auto",
 			tabline = {
 				lualine_a = { { "tabs", mode = 2 } },
 				lualine_z = { "lsp_status" },
