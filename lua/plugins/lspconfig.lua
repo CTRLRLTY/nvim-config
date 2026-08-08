@@ -147,26 +147,6 @@ local function on_attach_basedpyright(client, bufnr)
 end
 
 local function lsp_config(servers)
-	-- vim.diagnostic.config({
-	-- 	virtual_text = true,
-	-- 	float = {
-	-- 		focusable = false,
-	-- 		style = "minimal",
-	-- 		border = "rounded",
-	-- 		source = true,
-	-- 		header = "",
-	-- 		prefix = "",
-	-- 	},
-	-- })
-
-	vim.o.updatetime = 500
-
-	vim.api.nvim_create_autocmd("CursorHold", {
-		callback = function()
-			vim.diagnostic.open_float(nil, { focus = false })
-		end,
-	})
-
 	for server, config in pairs(servers) do
 		-- passing config.capabilities to blink.cmp merges with the capabilities in your
 		-- `opts[server].capabilities, if you've defined it
